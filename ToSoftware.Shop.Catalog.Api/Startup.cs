@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Sentry.AspNetCore;
 using ToSoftware.Shop.Catalog.Api.Data;
 using ToSoftware.Shop.Catalog.Api.Domain.Repositories.Contracts;
 using ToSoftware.Shop.Catalog.Api.Filters;
@@ -36,8 +35,6 @@ namespace ToSoftware.Shop.Catalog.Api
                 .AllowCredentials());
 
             app.UseRouting();
-
-            app.UseSentryTracing();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }

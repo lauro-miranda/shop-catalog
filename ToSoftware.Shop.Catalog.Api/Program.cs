@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Sentry;
+using Serilog;
+using Serilog.Events;
 
 namespace ToSoftware.Shop.Catalog.Api
 {
@@ -17,16 +19,23 @@ namespace ToSoftware.Shop.Catalog.Api
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    // Add the following line:
-                    webBuilder.UseSentry(o =>
-                    {
-                        o.Dsn = "https://d2825b7ba6564b3e8ffc59cb3eb6e18d@o265796.ingest.sentry.io/5812452";
-                        // When configuring for the first time, to see what the SDK is doing:
-                        o.Debug = true;
-                        // Set traces_sample_rate to 1.0 to capture 100% of transactions for performance monitoring.
-                        // We recommend adjusting this value in production.
-                        o.TracesSampleRate = 1.0;
-                    });
+                    Log.Logger = new LoggerConfiguration()
+                      .WriteTo.Sentry(o =>
+                      {
+                          o.MinimumBreadcrumbLevel = LogEventLevel.Debug;
+
+                          o.MinimumEventLevel = LogEventLevel.Information;
+
+                          o.Dsn = "https://d2825b7ba6564b3e8ffc59cb3eb6e18d@o265796.ingest.sentry.io/5812452";
+                          o.Debug = true;
+                          o.AttachStacktrace = true;
+                          o.SendDefaultPii = true;
+                          o.TracesSampleRate = 1.0;
+                          o.DiagnosticLevel = SentryLevel.Debug;
+                      })
+                      .CreateLogger();
+
+                    webBuilder.UseStartup<Startup>();
                 });
     }
 }

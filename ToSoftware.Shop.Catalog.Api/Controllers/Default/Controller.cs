@@ -1,5 +1,7 @@
 ﻿using LM.Responses;
+using LM.Responses.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,28 +13,44 @@ namespace ToSoftware.Shop.Catalog.Api.Controllers
     {
         protected async Task<IActionResult> WithResponseAsync<TResponseMessage>(Func<Task<Response<TResponseMessage>>> func)
         {
-            var response = await func.Invoke();
+            try
+            {
+                var response = await func.Invoke();
 
-            if (!response.HasError)
-                return Ok(response);
+                if (!response.HasError)
+                    return Ok(response);
 
-            if (response.Messages.Any(m => m.Type == MessageType.BusinessError))
-                return BadRequest(response);
+                if (response.Messages.Any(m => m.Type == MessageType.BusinessError))
+                    return BadRequest(response);
 
-            return StatusCode(500, response);
+                return StatusCode(500, response);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return StatusCode(500, Response<TResponseMessage>.Create().WithCriticalError(ex.Message));
+            }
         }
 
         protected IActionResult WithResponseAsync(Func<Response> func)
         {
-            var response = func.Invoke();
+            try
+            {
+                var response = func.Invoke();
 
-            if (!response.HasError)
-                return Ok(response);
+                if (!response.HasError)
+                    return Ok(response);
 
-            if (response.Messages.Any(m => m.Type == MessageType.BusinessError))
-                return BadRequest(response);
+                if (response.Messages.Any(m => m.Type == MessageType.BusinessError))
+                    return BadRequest(response);
 
-            return StatusCode(500, response);
+                return StatusCode(500, response);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return StatusCode(500, Response<bool>.Create().WithCriticalError(ex.Message));
+            }
         }
     }
 }

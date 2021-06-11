@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: site
-          image: lauromiranda/shop-catalog
+          image: lauromiranda/shop-catalog:3
           ports:
             - containerPort: 81
           env:
