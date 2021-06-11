@@ -1,0 +1,12 @@
+#kubectl api-resources
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog-service
+spec:
+  selector:
+    app: shop-catalog-nginx
+  ports:
+    - port: 80
+      nodePort: 30200
+  type: LoadBalancer

@@ -17,7 +17,8 @@ namespace ToSoftware.Shop.Catalog.Api.Controllers.Mappers
             {
                 Code = product.Code,
                 Name = product.Name,
-                Price = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:C}", product.Price).Replace(" ", "").Replace("R$", "R$ "),
+                Price = product.Price,
+                FormattedPrice = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:C}", product.Price).Replace(" ", "").Replace("R$", "R$ "),
                 CreatedAt = product.CreatedAt
             };
         }

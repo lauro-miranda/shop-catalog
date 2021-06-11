@@ -13,7 +13,10 @@ namespace ToSoftware.Shop.Catalog.Api.Messages
         public string Name { get; set; }
 
         [DataMember]
-        public string Price { get; set; }
+        public decimal Price { get; set; }
+
+        [DataMember]
+        public string FormattedPrice { get; set; }
 
         [DataMember]
         public DateTime CreatedAt { get; set; }

@@ -1,0 +1,23 @@
+#kubectl api-resources
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: shop-catalog-nginx
+  template:
+    metadata:      
+      labels:
+        app: shop-catalog-nginx
+    spec:
+      containers:
+        - name: site
+          image: lauromiranda/shop-catalog
+          ports:
+            - containerPort: 81
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Development

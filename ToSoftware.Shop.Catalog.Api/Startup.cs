@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ToSoftware.Shop.Catalog.Api.Data;
 using ToSoftware.Shop.Catalog.Api.Domain.Repositories.Contracts;
+using ToSoftware.Shop.Catalog.Api.Filters;
 
 namespace ToSoftware.Shop.Catalog.Api
 {
@@ -16,6 +17,8 @@ namespace ToSoftware.Shop.Catalog.Api
             services.AddTransient<IProductRepository, ProductRepository>();
 
             services.AddCors();
+
+            services.AddScoped<CodeQueryFilter>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

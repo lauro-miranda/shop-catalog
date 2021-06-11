@@ -10,10 +10,10 @@ namespace ToSoftware.Shop.Catalog.Api.Data
 {
     public class ProductRepository : IProductRepository
     {
-        public async Task<Response<List<Product>>> GetAllAsync() 
+        public async Task<List<Product>> GetAllAsync() 
             => await Task.Run(() => GetAll());
 
-        public async Task<Response<Product>> FindAsync(Guid code)
+        public async Task<Maybe<Product>> FindAsync(Guid code)
             => await Task.Run(() => GetAll().FirstOrDefault(p => p.Code.Equals(code)));
 
         static List<Product> GetAll() => new List<Product>
@@ -29,5 +29,8 @@ namespace ToSoftware.Shop.Catalog.Api.Data
             new Product(Guid.Parse("CC9435BB-678A-4BF9-8493-4D66057948FB"), "Galaxy S9", 4500.99M),
             new Product(Guid.Parse("43FE01FC-1CDA-4346-89DC-AEAF3AB6F66A"), "Iphone 8 Plus", 5999.99M)
         };
+
+        public async Task<List<Product>> FindAsync(List<Guid> codes)
+            => await Task.Run(() => GetAll().Where(p => codes.Contains(p.Code)).ToList());
     }
 }

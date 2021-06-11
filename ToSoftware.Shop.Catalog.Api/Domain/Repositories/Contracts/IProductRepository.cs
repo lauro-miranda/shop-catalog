@@ -7,8 +7,10 @@ namespace ToSoftware.Shop.Catalog.Api.Domain.Repositories.Contracts
 {
     public interface IProductRepository
     {
-        Task<Response<List<Product>>> GetAllAsync();
+        Task<List<Product>> GetAllAsync();
 
-        Task<Response<Product>> FindAsync(Guid code);
+        Task<Maybe<Product>> FindAsync(Guid code);
+
+        Task<List<Product>> FindAsync(List<Guid> codes);
     }
 }
